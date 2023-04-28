@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class Punishment {
 
-    private final NamedEntity executor;
+    private final NamedEntity operator;
     private String reason;
     private final long duration;
     private final long issued;

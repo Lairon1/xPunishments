@@ -62,14 +62,14 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
                 `%s` = VALUES (`%s`);
                 """.formatted(
                 Names.TABLE,
-                Names.MUTE_EXECUTOR_UUID, Names.MUTE_EXECUTOR_UUID,
-                Names.MUTE_EXECUTOR_NAME, Names.MUTE_EXECUTOR_NAME,
+                Names.MUTE_OPERATOR_UUID, Names.MUTE_OPERATOR_UUID,
+                Names.MUTE_OPERATOR_NAME, Names.MUTE_OPERATOR_NAME,
                 Names.MUTE_REASON, Names.MUTE_REASON,
                 Names.MUTE_EXPRESS, Names.MUTE_EXPRESS,
                 Names.MUTE_ISSUED, Names.MUTE_ISSUED,
 
-                Names.BAN_EXECUTOR_UUID, Names.BAN_EXECUTOR_UUID,
-                Names.BAN_EXECUTOR_NAME, Names.BAN_EXECUTOR_NAME,
+                Names.BAN_OPERATOR_UUID, Names.BAN_OPERATOR_UUID,
+                Names.BAN_OPERATOR_NAME, Names.BAN_OPERATOR_NAME,
                 Names.BAN_REASON, Names.BAN_REASON,
                 Names.BAN_EXPRESS, Names.BAN_EXPRESS,
                 Names.BAN_ISSUED, Names.BAN_ISSUED
@@ -80,8 +80,8 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
 
         if (player.getMute() != null) {
             Punishment mute = player.getMute();
-            statement.setString(3, mute.getExecutor().getUuid().toString());
-            statement.setString(4, mute.getExecutor().getName());
+            statement.setString(3, mute.getOperator().getUuid().toString());
+            statement.setString(4, mute.getOperator().getName());
             statement.setString(5, mute.getReason());
             statement.setLong(6, mute.getDuration());
             statement.setLong(7, mute.getIssued());
@@ -95,8 +95,8 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
 
         if (player.getBan() != null) {
             Punishment ban = player.getBan();
-            statement.setString(8, ban.getExecutor().getUuid().toString());
-            statement.setString(9, ban.getExecutor().getName());
+            statement.setString(8, ban.getOperator().getUuid().toString());
+            statement.setString(9, ban.getOperator().getName());
             statement.setString(10, ban.getReason());
             statement.setLong(11, ban.getDuration());
             statement.setLong(12, ban.getIssued());
@@ -119,24 +119,24 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
                 resultSet.getString(Names.NAME)
         );
 
-        String muteExecutorUUIDString = resultSet.getString(Names.MUTE_EXECUTOR_UUID);
+        String muteExecutorUUIDString = resultSet.getString(Names.MUTE_OPERATOR_UUID);
         if (muteExecutorUUIDString != null) {
             player.setMute(new Punishment(
                     new DefaultNamedEntity(
                             UUID.fromString(muteExecutorUUIDString),
-                            resultSet.getString(Names.MUTE_EXECUTOR_NAME)
+                            resultSet.getString(Names.MUTE_OPERATOR_NAME)
                     ),
                     resultSet.getLong(Names.MUTE_EXPRESS),
                     resultSet.getLong(Names.MUTE_ISSUED)
             ));
         }
 
-        String banExecutorUUIDString = resultSet.getString(Names.BAN_EXECUTOR_UUID);
+        String banExecutorUUIDString = resultSet.getString(Names.BAN_OPERATOR_UUID);
         if (banExecutorUUIDString != null) {
             player.setBan(new Punishment(
                     new DefaultNamedEntity(
                             UUID.fromString(banExecutorUUIDString),
-                            resultSet.getString(Names.BAN_EXECUTOR_NAME)
+                            resultSet.getString(Names.BAN_OPERATOR_NAME)
                     ),
                     resultSet.getLong(Names.BAN_EXPRESS),
                     resultSet.getLong(Names.BAN_ISSUED)
@@ -185,14 +185,14 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
                 Names.UUID,
                 Names.NAME,
 
-                Names.MUTE_EXECUTOR_UUID,
-                Names.MUTE_EXECUTOR_NAME,
+                Names.MUTE_OPERATOR_UUID,
+                Names.MUTE_OPERATOR_NAME,
                 Names.MUTE_REASON,
                 Names.MUTE_EXPRESS,
                 Names.MUTE_ISSUED,
 
-                Names.BAN_EXECUTOR_UUID,
-                Names.BAN_EXECUTOR_NAME,
+                Names.BAN_OPERATOR_UUID,
+                Names.BAN_OPERATOR_NAME,
                 Names.BAN_REASON,
                 Names.BAN_EXPRESS,
                 Names.BAN_ISSUED,
@@ -208,14 +208,14 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
                 UUID = "uuid",
                 NAME = "name",
 
-        MUTE_EXECUTOR_UUID = "mute_executor_uuid",
-                MUTE_EXECUTOR_NAME = "mute_executor_name",
+        MUTE_OPERATOR_UUID = "mute_operator_uuid",
+                MUTE_OPERATOR_NAME = "mute_operator_name",
                 MUTE_REASON = "mute_reason",
                 MUTE_EXPRESS = "mute_express",
                 MUTE_ISSUED = "mute_issued",
 
-        BAN_EXECUTOR_UUID = "ban_executor_uuid",
-                BAN_EXECUTOR_NAME = "ban_executor_name",
+        BAN_OPERATOR_UUID = "ban_operator_uuid",
+                BAN_OPERATOR_NAME = "ban_operator_name",
                 BAN_REASON = "ban_reason",
                 BAN_EXPRESS = "ban_express",
                 BAN_ISSUED = "ban_issued";

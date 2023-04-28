@@ -8,7 +8,6 @@
     <artifactId>xPunishments-Velocity</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-
     <name>xPunishments-Velocity</name>
 
     <properties>
@@ -16,14 +15,29 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <parent>
-        <groupId>com.lairon</groupId>
-        <artifactId>xPunishments</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>testCompile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -71,21 +85,22 @@
             <id>papermc-repo</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
+        <repository>
+            <id>space-lairon-libs</id>
+            <url>https://maven.pkg.jetbrains.space/0xlairon1/p/main/lairon-libs</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>com.velocitypowered</groupId>
             <artifactId>velocity-api</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
+            <version>3.1.1</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.velocitypowered</groupId>
-            <artifactId>velocity-annotation-processor</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
+
+
+
         <dependency>
             <groupId>com.lairon.xpc</groupId>
             <artifactId>xPunishments-Core</artifactId>
@@ -102,7 +117,7 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
             <version>4.13.1</version>
-            <scope>provided</scope>
+            <scope>provided </scope>
         </dependency>
     </dependencies>
 </project>

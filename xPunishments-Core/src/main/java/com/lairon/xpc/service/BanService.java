@@ -6,8 +6,8 @@ import lombok.NonNull;
 
 public interface BanService {
 
-    void ban(@NonNull NamedEntity executor, @NonNull Player punished, @NonNull String reason);
-    void tempBan(@NonNull NamedEntity executor, @NonNull Player punished, @NonNull String reason, long duration);
-    void unban(@NonNull NamedEntity executor, @NonNull Player punished, @NonNull String reason);
+    void ban(@NonNull NamedEntity operator, @NonNull Player player, @NonNull String reason);
+    void tempBan(@NonNull NamedEntity operator, @NonNull Player player, @NonNull String reason, long duration);
+    void unban(@NonNull NamedEntity operator, @NonNull Player player, @NonNull String reason);
 
 }
