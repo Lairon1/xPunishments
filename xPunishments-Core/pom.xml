@@ -71,6 +71,7 @@
             <version>8.0.32</version>
             <scope>compile</scope>
         </dependency>
+        <!--My dependency's-->
         <dependency>
             <groupId>ru.lairon.libs</groupId>
             <artifactId>xConfig-core</artifactId>
@@ -78,15 +79,22 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.1</version>
+            <groupId>ru.lairon.service</groupId>
+            <artifactId>NaimedEntity</artifactId>
+            <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>5.0.1</version>
+            <groupId>ru.lairon.service</groupId>
+            <artifactId>PlaceholderService</artifactId>
+            <version>1.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>ru.lairon.service</groupId>
+            <artifactId>MessageService</artifactId>
+            <version>1.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

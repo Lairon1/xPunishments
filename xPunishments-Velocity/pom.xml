@@ -98,15 +98,6 @@
             <version>3.1.1</version>
             <scope>provided</scope>
         </dependency>
-
-
-
-        <dependency>
-            <groupId>com.lairon.xpc</groupId>
-            <artifactId>xPunishments-Core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -118,6 +109,19 @@
             <artifactId>adventure-text-minimessage</artifactId>
             <version>4.13.1</version>
             <scope>provided </scope>
+        </dependency>
+        <!--My dependency's-->
+        <dependency>
+            <groupId>com.lairon.xpc</groupId>
+            <artifactId>xPunishments-Core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>ru.lairon.service</groupId>
+            <artifactId>MessageService-Velocity</artifactId>
+            <version>1.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

@@ -7,16 +7,15 @@ import com.lairon.xpc.model.PunishmentHistoryNode;
 import com.lairon.xpc.model.PunishmentHistoryNodeType;
 import com.lairon.xpc.service.PunishmentService;
 import lombok.NonNull;
-import org.apache.commons.lang3.time.DurationFormatUtils;
+import lombok.RequiredArgsConstructor;
 
-import com.google.inject.Inject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@RequiredArgsConstructor
 public class DefaultPunishmentService implements PunishmentService {
 
-    @Inject
-    private DataProvider dataProvider;
+    private final DataProvider dataProvider;
 
     @Override
     public boolean canUseChat(@NonNull Player player) {
@@ -46,7 +45,7 @@ public class DefaultPunishmentService implements PunishmentService {
 
     @Override
     public String formatPunishmentDuration(@NonNull Punishment punishment, @NonNull String format) {
-        return DurationFormatUtils.formatDuration(punishment.getDuration(), format);
+        return punishment.getDuration() + "";
     }
 
     @Override

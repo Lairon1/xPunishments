@@ -1,6 +1,7 @@
 package com.lairon.xpc.model;
 
 import lombok.Data;
+import ru.lairon.service.namedentity.NamedEntity;
 
 @Data
 public class Punishment {

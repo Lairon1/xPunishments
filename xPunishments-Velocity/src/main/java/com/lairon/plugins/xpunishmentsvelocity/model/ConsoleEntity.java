@@ -1,6 +1,6 @@
 package com.lairon.plugins.xpunishmentsvelocity.model;
 
-import com.lairon.xpc.model.NamedEntity;
+import ru.lairon.service.namedentity.NamedEntity;
 
 import java.util.UUID;
 
@@ -12,7 +12,7 @@ public class ConsoleEntity implements NamedEntity {
     private ConsoleEntity() {}
 
     @Override
-    public java.util.UUID getUuid() {
+    public java.util.UUID getUUID() {
         return UUID;
     }
 

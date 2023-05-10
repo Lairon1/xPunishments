@@ -3,6 +3,7 @@ package com.lairon.xpc.model;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import ru.lairon.service.namedentity.NamedEntity;
 
 import java.util.UUID;
 
@@ -16,4 +17,7 @@ public class Player implements NamedEntity, Punishable {
     private Punishment mute;
     private Punishment ban;
 
+    public UUID getUUID() {
+        return uuid;
+    }
 }

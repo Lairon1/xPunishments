@@ -4,8 +4,8 @@ import com.lairon.xpc.data.DataProvider;
 import com.lairon.xpc.model.Player;
 import com.lairon.xpc.model.Punishment;
 import com.lairon.xpc.model.PunishmentHistoryNode;
-import com.lairon.xpc.model.impl.DefaultNamedEntity;
 import lombok.*;
+import ru.lairon.service.namedentity.impl.DefaultNamedEntity;
 
 import java.sql.*;
 import java.util.List;
@@ -75,12 +75,12 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
                 Names.BAN_ISSUED, Names.BAN_ISSUED
         ));
 
-        statement.setString(1, player.getUuid().toString());
+        statement.setString(1, player.getUUID().toString());
         statement.setString(2, player.getName());
 
         if (player.getMute() != null) {
             Punishment mute = player.getMute();
-            statement.setString(3, mute.getOperator().getUuid().toString());
+            statement.setString(3, mute.getOperator().getUUID().toString());
             statement.setString(4, mute.getOperator().getName());
             statement.setString(5, mute.getReason());
             statement.setLong(6, mute.getDuration());
@@ -95,7 +95,7 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
 
         if (player.getBan() != null) {
             Punishment ban = player.getBan();
-            statement.setString(8, ban.getOperator().getUuid().toString());
+            statement.setString(8, ban.getOperator().getUUID().toString());
             statement.setString(9, ban.getOperator().getName());
             statement.setString(10, ban.getReason());
             statement.setLong(11, ban.getDuration());

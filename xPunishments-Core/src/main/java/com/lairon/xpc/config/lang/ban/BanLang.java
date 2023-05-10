@@ -8,8 +8,8 @@ import ru.lairon.libs.xconfig.annotation.Path;
 @Path("Ban.")
 public class BanLang extends Config {
 
-    @Path("cannot")
-    private String cannot = "&7[&6xPM&7] Вы не можете забанить игрока &6{player}&7 так как у него выше права доступа.";
+    @Path("Already")
+    private String already = "{def_prefix} Игрок {player} уже наказан.";
 
     private PermanentBan perm = new PermanentBan();
     private TemporaryBan temp = new TemporaryBan();
