@@ -12,17 +12,19 @@ public class PermanentBan extends Config {
     private String usage = "{def_prefix} Используйте: &6/ban <user> <reason>";
 
     @Path("Announce")
-    private String announce = "{def_prefix} Пользователь &6{operator}&7 забанил &6{user}&7 [&4ПОДРОБНЕЕ&7]";
+    private String announce = "{def_prefix} &6{operator_name}&7 заблокировал пользователя &6{user_name}&7 " +
+                              "[&4<hover:show_text:'&7Комментарий:&6 {reason}<newline>&7Заблокирован на: &6{duration}'>ПОДРОБНЕЕ&7</hover>]";
 
     @Path("Message")
-    private String message = "{def_prefix} Вы успешно забанили пользователя &6{user}&7.";
+    private String message = "{def_prefix} Вы успешно заблокировали пользователя &6{user_name}&7.";
 
     @Path("Cause")
     private String cause = """
-            &7Ваш аккаунт заблокирован &4НАВСЕГДА&7!
+            Вы были заблокированы!
             
-            &7Вас забанил: &6{operator}
-            &7По причине: &6{reason}
+            &7Вас заблокировал: &6{operator_name}
+            &7Комментарий: &6{reason}
+            &7Вы заблокирован на: &6{duration}
             
             &7Обжаловать блокировку можно по ссылке: &6https://some.site.ru/forum
             &7Платный разбан можно приобрести на сайте: &6https://some.site.ru/donate

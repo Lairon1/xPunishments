@@ -1,20 +1,21 @@
 package com.lairon.xpc.handler.punishment.impl;
 
 import com.lairon.xpc.config.lang.LangConfig;
-import com.lairon.xpc.config.settings.SettingsConfig;
 import com.lairon.xpc.handler.punishment.BanHandler;
 import com.lairon.xpc.model.User;
 import com.lairon.xpc.permission.Permission;
 import com.lairon.xpc.service.EntityService;
-import com.lairon.xpc.service.PunishmentService;
-import com.lairon.xpc.service.ep.BanService;
-import com.lairon.xpc.service.ep.exeption.ExecutionPunishmentException;
-import com.lairon.xpc.service.ep.exeption.impl.AlreadyPunishedException;
+import com.lairon.xpc.service.PlaceholderParserService;
+import com.lairon.xpc.service.punishment.BanService;
+import com.lairon.xpc.service.punishment.exeption.ExecutionPunishmentException;
+import com.lairon.xpc.service.punishment.exeption.impl.AlreadyPunishedException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import ru.lairon.service.message.MessageService;
 import ru.lairon.service.namedentity.NamedEntity;
 import ru.lairon.service.placeholder.PlaceholderService;
+
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class DefaultBanHandler implements BanHandler {
@@ -22,8 +23,7 @@ public class DefaultBanHandler implements BanHandler {
     private final BanService banService;
     private final EntityService entityService;
     private final MessageService messageService;
-    private final PunishmentService punishmentService;
-    private final SettingsConfig settings;
+    private final PlaceholderParserService placeholderParserService;
     private final PlaceholderService placeholderService;
     private final LangConfig lang;
 
@@ -44,19 +44,20 @@ public class DefaultBanHandler implements BanHandler {
         }
         try {
             banService.permanent(executor, user, reason);
-            messageService.sendChat(executor, placeholderService.applyPlaceholders(executor, lang.getBanLang().getPermanent().getMessage(),
-                    "user", user.getName()
-                    ));
-            if (!silent){
-                messageService.announceChat(placeholderService.applyPlaceholders(executor, lang.getBanLang().getPermanent().getAnnounce(),
-                        "operator", executor.getName(),
-                        "user", user.getName(),
-                        "reason", reason == null ? lang.getReasonNotIndicated() : reason
-                ));
+            Map<String, Object> placeholders = placeholderParserService.toPlaceholdersPunishment(user, user.getBan());
+            messageService.sendChat(executor, placeholderService.applyPlaceholders(executor, lang.getBanLang()
+                    .getPermanent()
+                    .getMessage(), placeholders));
+            if (!silent) {
+                messageService.announceChat(placeholderService.applyPlaceholders(executor, lang.getBanLang()
+                        .getPermanent()
+                        .getAnnounce(), placeholders));
             }
         } catch (AlreadyPunishedException e) {
-            messageService.sendChat(executor, placeholderService.applyPlaceholders(executor, lang.getBanLang().getAlready(),
-                    "user", user.getName()
+            messageService.sendChat(executor, placeholderService.applyPlaceholders(
+                    executor,
+                    lang.getBanLang().getAlready(),
+                    placeholderParserService.toPlaceholdersEntity(user)
             ));
         } catch (ExecutionPunishmentException e) {
             messageService.sendChat(executor, placeholderService.applyPlaceholders(executor, lang.getUnknownError(),
@@ -83,29 +84,25 @@ public class DefaultBanHandler implements BanHandler {
 
         try {
             banService.temporarily(executor, user, reason, duration);
+            Map<String, Object> placeholders = placeholderParserService.toPlaceholdersPunishment(user, user.getBan());
+
             messageService.sendChat(executor, placeholderService.applyPlaceholders(executor,
                     lang.getBanLang()
                             .getTemporary()
                             .getMessage(),
-                    "user", user.getName(),
-                    "duration", punishmentService.formatPunishmentDuration(user.getBan(), settings.getDurationFormat())
-            ));
-            if (!silent){
+                    placeholders));
+            if (!silent) {
                 messageService.announceChat(placeholderService.applyPlaceholders(executor,
                         lang.getBanLang()
                                 .getTemporary()
                                 .getAnnounce(),
-                        "operator", executor.getName(),
-                        "user", user.getName(),
-                        "reason", reason == null ? lang.getReasonNotIndicated() : reason,
-                        "duration", punishmentService.formatPunishmentDuration(user.getBan(), settings.getDurationFormat())
-                ));
+                        placeholders));
             }
         } catch (AlreadyPunishedException e) {
-            messageService.sendChat(executor, placeholderService.applyPlaceholders(executor,
-                    lang.getBanLang()
-                            .getAlready(),
-                    "user", user.getName()
+            messageService.sendChat(executor, placeholderService.applyPlaceholders(
+                    executor,
+                    lang.getBanLang().getAlready(),
+                    placeholderParserService.toPlaceholdersEntity(user)
             ));
         } catch (ExecutionPunishmentException e) {
             messageService.sendChat(executor, placeholderService.applyPlaceholders(executor, lang.getUnknownError(),

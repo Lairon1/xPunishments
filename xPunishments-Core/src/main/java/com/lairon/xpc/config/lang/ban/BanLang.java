@@ -9,7 +9,7 @@ import ru.lairon.libs.xconfig.annotation.Path;
 public class BanLang extends Config {
 
     @Path("Already")
-    private String already = "{def_prefix} Игрок &6{user}&7 уже наказан.";
+    private String already = "{def_prefix} Пользователь &6{user_name}&7 уже наказан.";
 
 
     private PermanentBan permanent = new PermanentBan();

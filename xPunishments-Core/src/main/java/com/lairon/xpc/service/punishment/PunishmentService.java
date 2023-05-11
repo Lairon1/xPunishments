@@ -1,11 +1,11 @@
-package com.lairon.xpc.service.ep;
+package com.lairon.xpc.service.punishment;
 
 import com.lairon.xpc.model.User;
-import com.lairon.xpc.service.ep.exeption.ExecutionPunishmentException;
+import com.lairon.xpc.service.punishment.exeption.ExecutionPunishmentException;
 import lombok.NonNull;
 import ru.lairon.service.namedentity.NamedEntity;
 
-public interface ExecutionPunishmentService {
+public interface PunishmentService {
 
     void temporarily(@NonNull NamedEntity operator, @NonNull User user, String reason, long duration)
             throws ExecutionPunishmentException;
@@ -16,4 +16,5 @@ public interface ExecutionPunishmentService {
     void pardon(@NonNull NamedEntity operator, @NonNull User user)
             throws ExecutionPunishmentException;
 
+    boolean can(@NonNull User user);
 }

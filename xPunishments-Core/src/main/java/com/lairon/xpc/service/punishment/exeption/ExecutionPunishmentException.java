@@ -1,4 +1,4 @@
-package com.lairon.xpc.service.ep.exeption;
+package com.lairon.xpc.service.punishment.exeption;
 
 import lombok.NonNull;
 

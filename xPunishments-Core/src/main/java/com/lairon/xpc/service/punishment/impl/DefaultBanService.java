@@ -1,15 +1,17 @@
-package com.lairon.xpc.service.ep.impl;
+package com.lairon.xpc.service.punishment.impl;
 
 import com.lairon.xpc.config.lang.LangConfig;
 import com.lairon.xpc.config.settings.SettingsConfig;
 import com.lairon.xpc.data.DataProvider;
 import com.lairon.xpc.model.Punishment;
+import com.lairon.xpc.model.PunishmentHistoryNode;
+import com.lairon.xpc.model.PunishmentHistoryNodeType;
 import com.lairon.xpc.model.User;
 import com.lairon.xpc.service.EntityService;
-import com.lairon.xpc.service.PunishmentService;
-import com.lairon.xpc.service.ep.BanService;
-import com.lairon.xpc.service.ep.exeption.impl.AlreadyPunishedException;
-import com.lairon.xpc.service.ep.exeption.impl.NotPunishedYetException;
+import com.lairon.xpc.service.PlaceholderParserService;
+import com.lairon.xpc.service.punishment.BanService;
+import com.lairon.xpc.service.punishment.exeption.impl.AlreadyPunishedException;
+import com.lairon.xpc.service.punishment.exeption.impl.NotPunishedYetException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import ru.lairon.service.namedentity.NamedEntity;
@@ -18,12 +20,11 @@ import ru.lairon.service.placeholder.PlaceholderService;
 @RequiredArgsConstructor
 public class DefaultBanService implements BanService {
 
-    private final PunishmentService punishmentService;
     private final PlaceholderService placeholderService;
+    private final PlaceholderParserService placeholderParserService;
     private final EntityService entityService;
     private final DataProvider dataProvider;
     private final LangConfig lang;
-    private final SettingsConfig settings;
 
     @Override
     public void temporarily(@NonNull NamedEntity operator, @NonNull User user, String reason, long duration)
@@ -40,10 +41,7 @@ public class DefaultBanService implements BanService {
                         .getBanLang()
                         .getTemporary()
                         .getCause(),
-                "{operator}", operator.getName(),
-                reason == null ? lang.getReasonNotIndicated() : reason,
-                "duration", punishmentService.formatPunishmentDuration(ban, settings.getDurationFormat()),
-                "issued", punishmentService.formatPunishmentIssued(ban, settings.getDateFormat())));
+                placeholderParserService.toPlaceholdersPunishment(user, ban)));
 
         dataProvider.save(user);
     }
@@ -63,8 +61,7 @@ public class DefaultBanService implements BanService {
                         .getBanLang()
                         .getPermanent()
                         .getCause(),
-                "{operator}", operator.getName(),
-                "reason", reason == null ? lang.getReasonNotIndicated() : reason)
+                placeholderParserService.toPlaceholdersPunishment(user, ban))
         );
 
         dataProvider.save(user);
@@ -77,5 +74,18 @@ public class DefaultBanService implements BanService {
             throw new NotPunishedYetException(user);
         user.setBan(null);
         dataProvider.save(user);
+    }
+
+    @Override
+    public boolean can(@NonNull User user) {
+        Punishment punishment = user.getBan();
+        if (punishment == null) return true;
+        if (punishment.getDuration() < System.currentTimeMillis()) {
+            dataProvider.addHistoryNode(new PunishmentHistoryNode(user, user.getMute(), PunishmentHistoryNodeType.BAN));
+            user.setBan(null);
+            dataProvider.save(user);
+            return true;
+        }
+        return false;
     }
 }

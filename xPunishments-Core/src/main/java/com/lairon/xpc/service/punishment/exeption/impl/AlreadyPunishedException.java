@@ -1,8 +1,8 @@
-package com.lairon.xpc.service.ep.exeption.impl;
+package com.lairon.xpc.service.punishment.exeption.impl;
 
 import com.lairon.xpc.model.User;
 import com.lairon.xpc.model.Punishment;
-import com.lairon.xpc.service.ep.exeption.ExecutionPunishmentException;
+import com.lairon.xpc.service.punishment.exeption.ExecutionPunishmentException;
 import lombok.Getter;
 import lombok.NonNull;
 
