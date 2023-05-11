@@ -10,7 +10,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class Player implements NamedEntity, Punishable {
+public class User implements NamedEntity, Punishable {
 
     private final UUID uuid;
     private final String name;
@@ -20,4 +20,13 @@ public class Player implements NamedEntity, Punishable {
     public UUID getUUID() {
         return uuid;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof NamedEntity entity)) return false;
+        return uuid.equals(entity.getUUID());
+    }
+
 }

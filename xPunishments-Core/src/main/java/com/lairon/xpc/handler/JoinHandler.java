@@ -1,10 +1,10 @@
 package com.lairon.xpc.handler;
 
-import com.lairon.xpc.model.Player;
+import com.lairon.xpc.model.User;
 import lombok.NonNull;
 
 public interface JoinHandler {
 
-    void onJoin(@NonNull Player player);
+    void onJoin(@NonNull User user);
 
 }

@@ -1,8 +1,7 @@
 package com.lairon.xpc.data;
 
-import com.lairon.xpc.model.Player;
+import com.lairon.xpc.model.User;
 import com.lairon.xpc.model.PunishmentHistoryNode;
-import com.lairon.xpc.model.PunishmentHistoryNodeType;
 import lombok.NonNull;
 
 import java.util.List;
@@ -11,10 +10,10 @@ import java.util.UUID;
 
 public interface DataProvider {
 
-    Optional<Player> findByUUID(@NonNull UUID uuid);
-    Optional<Player> findByName(@NonNull String name);
+    Optional<User> findByUUID(@NonNull UUID uuid);
+    Optional<User> findByName(@NonNull String name);
     void addHistoryNode(@NonNull PunishmentHistoryNode node);
     List<PunishmentHistoryNode> loadHistory(long during);
-    void save(@NonNull Player player);
+    void save(@NonNull User user);
 
 }

@@ -1,7 +1,7 @@
 package com.lairon.xpc.data.sql;
 
 import com.lairon.xpc.data.DataProvider;
-import com.lairon.xpc.model.Player;
+import com.lairon.xpc.model.User;
 import com.lairon.xpc.model.Punishment;
 import com.lairon.xpc.model.PunishmentHistoryNode;
 import lombok.*;
@@ -17,7 +17,7 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
 
     @Override
     @SneakyThrows
-    public Optional<Player> findByUUID(@NonNull UUID uuid) {
+    public Optional<User> findByUUID(@NonNull UUID uuid) {
         @Cleanup
         PreparedStatement statement
                 = getConnection().prepareStatement("SELECT * FROM `%s` WHERE `%s` = ?;"
@@ -31,7 +31,7 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
 
     @Override
     @SneakyThrows
-    public Optional<Player> findByName(@NonNull String name) {
+    public Optional<User> findByName(@NonNull String name) {
         @Cleanup
         PreparedStatement statement
                 = getConnection().prepareStatement("SELECT * FROM `%s` WHERE `%s` = ?;"
@@ -45,7 +45,7 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
 
     @Override
     @SneakyThrows
-    public void save(@NonNull Player player) {
+    public void save(@NonNull User user) {
         @Cleanup
         PreparedStatement statement = getConnection().prepareStatement("""
                 INSERT INTO `%s` VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -75,11 +75,11 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
                 Names.BAN_ISSUED, Names.BAN_ISSUED
         ));
 
-        statement.setString(1, player.getUUID().toString());
-        statement.setString(2, player.getName());
+        statement.setString(1, user.getUUID().toString());
+        statement.setString(2, user.getName());
 
-        if (player.getMute() != null) {
-            Punishment mute = player.getMute();
+        if (user.getMute() != null) {
+            Punishment mute = user.getMute();
             statement.setString(3, mute.getOperator().getUUID().toString());
             statement.setString(4, mute.getOperator().getName());
             statement.setString(5, mute.getReason());
@@ -93,8 +93,8 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
             statement.setLong(7, 0);
         }
 
-        if (player.getBan() != null) {
-            Punishment ban = player.getBan();
+        if (user.getBan() != null) {
+            Punishment ban = user.getBan();
             statement.setString(8, ban.getOperator().getUUID().toString());
             statement.setString(9, ban.getOperator().getName());
             statement.setString(10, ban.getReason());
@@ -113,15 +113,15 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
 
     protected abstract Connection getConnection();
 
-    private Player parsePlayer(@NonNull ResultSet resultSet) throws SQLException {
-        Player player = new Player(
+    private User parsePlayer(@NonNull ResultSet resultSet) throws SQLException {
+        User user = new User(
                 UUID.fromString(resultSet.getString(Names.UUID)),
                 resultSet.getString(Names.NAME)
         );
 
         String muteExecutorUUIDString = resultSet.getString(Names.MUTE_OPERATOR_UUID);
         if (muteExecutorUUIDString != null) {
-            player.setMute(new Punishment(
+            user.setMute(new Punishment(
                     new DefaultNamedEntity(
                             UUID.fromString(muteExecutorUUIDString),
                             resultSet.getString(Names.MUTE_OPERATOR_NAME)
@@ -133,7 +133,7 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
 
         String banExecutorUUIDString = resultSet.getString(Names.BAN_OPERATOR_UUID);
         if (banExecutorUUIDString != null) {
-            player.setBan(new Punishment(
+            user.setBan(new Punishment(
                     new DefaultNamedEntity(
                             UUID.fromString(banExecutorUUIDString),
                             resultSet.getString(Names.BAN_OPERATOR_NAME)
@@ -143,7 +143,7 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
             ));
         }
 
-        return player;
+        return user;
     }
 
     @Override

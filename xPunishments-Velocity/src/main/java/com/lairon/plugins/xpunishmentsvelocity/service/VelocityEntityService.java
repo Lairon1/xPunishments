@@ -1,6 +1,7 @@
 package com.lairon.plugins.xpunishmentsvelocity.service;
 
 import com.lairon.plugins.xpunishmentsvelocity.model.ConsoleEntity;
+import com.lairon.xpc.permission.Permission;
 import com.lairon.xpc.service.EntityService;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
@@ -17,16 +18,20 @@ public class VelocityEntityService implements EntityService {
 
     private final ProxyServer server;
 
-
     @Override
-    public boolean hasPermission(@NonNull NamedEntity player, @NonNull String permission) {
+    public boolean hasPermission(@NonNull NamedEntity player, @NonNull Permission permission) {
+        String stringPermission = "xpn." + permission
+                .name()
+                .replace("_", ".")
+                .toLowerCase();
+
         if (player == ConsoleEntity.getInstance())
-            return server.getConsoleCommandSource().hasPermission(permission);
+            return server.getConsoleCommandSource().hasPermission(stringPermission);
 
         Player vPlayer = server.getPlayer(player.getUUID()).orElse(null);
         if (vPlayer == null) return false;
 
-        return vPlayer.hasPermission(permission);
+        return vPlayer.hasPermission(stringPermission);
     }
 
     @Override

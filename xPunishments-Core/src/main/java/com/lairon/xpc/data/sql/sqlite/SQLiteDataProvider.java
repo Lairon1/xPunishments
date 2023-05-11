@@ -23,8 +23,9 @@ public class SQLiteDataProvider extends AbstractSQLDataProvider {
     protected Connection getConnection() {
         return connection == null || connection.isClosed() ? createNewConnection() : connection;
     }
-
+    @SneakyThrows
     private Connection createNewConnection() throws SQLException {
+        Class.forName("org.sqlite.JDBC");
         connection = DriverManager.getConnection("jdbc:sqlite:" + filePath);
         return connection;
     }

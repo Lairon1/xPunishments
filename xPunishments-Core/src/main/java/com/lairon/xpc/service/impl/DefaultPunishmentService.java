@@ -1,7 +1,7 @@
 package com.lairon.xpc.service.impl;
 
 import com.lairon.xpc.data.DataProvider;
-import com.lairon.xpc.model.Player;
+import com.lairon.xpc.model.User;
 import com.lairon.xpc.model.Punishment;
 import com.lairon.xpc.model.PunishmentHistoryNode;
 import com.lairon.xpc.model.PunishmentHistoryNodeType;
@@ -18,26 +18,26 @@ public class DefaultPunishmentService implements PunishmentService {
     private final DataProvider dataProvider;
 
     @Override
-    public boolean canUseChat(@NonNull Player player) {
-        Punishment punishment = player.getMute();
+    public boolean canUseChat(@NonNull User user) {
+        Punishment punishment = user.getMute();
         if (punishment == null) return true;
         if (punishment.getDuration() < System.currentTimeMillis()) {
-            dataProvider.addHistoryNode(new PunishmentHistoryNode(player, player.getMute(), PunishmentHistoryNodeType.MUTE));
-            player.setMute(null);
-            dataProvider.save(player);
+            dataProvider.addHistoryNode(new PunishmentHistoryNode(user, user.getMute(), PunishmentHistoryNodeType.MUTE));
+            user.setMute(null);
+            dataProvider.save(user);
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean canJoin(@NonNull Player player) {
-        Punishment punishment = player.getBan();
+    public boolean canJoin(@NonNull User user) {
+        Punishment punishment = user.getBan();
         if (punishment == null) return true;
         if (punishment.getDuration() < System.currentTimeMillis()) {
-            dataProvider.addHistoryNode(new PunishmentHistoryNode(player, player.getMute(), PunishmentHistoryNodeType.BAN));
-            player.setBan(null);
-            dataProvider.save(player);
+            dataProvider.addHistoryNode(new PunishmentHistoryNode(user, user.getMute(), PunishmentHistoryNodeType.BAN));
+            user.setBan(null);
+            dataProvider.save(user);
             return true;
         }
         return false;
@@ -49,7 +49,7 @@ public class DefaultPunishmentService implements PunishmentService {
     }
 
     @Override
-    public String formatPunishmentExpires(@NonNull Punishment punishment, @NonNull String format) {
+    public String formatPunishmentIssued(@NonNull Punishment punishment, @NonNull String format) {
         return new SimpleDateFormat(format).format(new Date(punishment.getIssued() + punishment.getDuration()));
     }
 }
