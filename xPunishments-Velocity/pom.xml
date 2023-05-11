@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.lairon.plugins</groupId>
+    <groupId>ru.lairon.plugins</groupId>
     <artifactId>xPunishments-Velocity</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
     <name>xPunishments-Velocity</name>
 
     <parent>
-        <groupId>com.lairon</groupId>
+        <groupId>ru.lairon</groupId>
         <artifactId>xPunishments</artifactId>
         <version>${revision}</version>
     </parent>
@@ -98,7 +98,7 @@
         </dependency>
         <!--My dependency's-->
         <dependency>
-            <groupId>com.lairon.xpc</groupId>
+            <groupId>ru.lairon.xpc</groupId>
             <artifactId>xPunishments-Core</artifactId>
             <version>${revision}</version>
             <scope>compile</scope>
