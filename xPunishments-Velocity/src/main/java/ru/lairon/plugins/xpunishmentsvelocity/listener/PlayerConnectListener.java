@@ -8,14 +8,14 @@ import com.velocitypowered.api.event.player.ServerPostConnectEvent;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class PlayerConnectEvent {
+public class PlayerConnectListener {
 
     private final DataProvider dataProvider;
     private final JoinHandler joinHandler;
 
     @Subscribe
     public void onServerPostConnect(ServerPostConnectEvent event) {
-        User user = dataProvider.findByUUID(event.getPlayer().getUniqueId()).get();
+        User user = dataProvider.findByUUID(event.getPlayer().getUniqueId()).orElse(null);
         if(user == null){
             user = new User(event.getPlayer().getUniqueId(), event.getPlayer().getUsername());
             dataProvider.save(user);

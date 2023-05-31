@@ -1,11 +1,13 @@
 package ru.lairon.xpc.data.sql;
 
+import lombok.Cleanup;
+import lombok.NonNull;
+import lombok.SneakyThrows;
+import ru.lairon.service.namedentity.impl.DefaultNamedEntity;
 import ru.lairon.xpc.data.DataProvider;
-import ru.lairon.xpc.model.User;
 import ru.lairon.xpc.model.Punishment;
 import ru.lairon.xpc.model.PunishmentHistoryNode;
-import lombok.*;
-import ru.lairon.service.namedentity.impl.DefaultNamedEntity;
+import ru.lairon.xpc.model.User;
 
 import java.sql.*;
 import java.util.List;
@@ -19,8 +21,7 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
     @SneakyThrows
     public Optional<User> findByUUID(@NonNull UUID uuid) {
         @Cleanup
-        PreparedStatement statement
-                = getConnection().prepareStatement("SELECT * FROM `%s` WHERE `%s` = ?;"
+        PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM `%s` WHERE `%s` = ?;"
                 .formatted(Names.TABLE, Names.UUID));
         statement.setString(1, uuid.toString());
         @Cleanup
@@ -46,8 +47,7 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
     @Override
     @SneakyThrows
     public void save(@NonNull User user) {
-        @Cleanup
-        PreparedStatement statement = getConnection().prepareStatement("""
+        String query = """
                 INSERT INTO `%s` VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON DUPLICATE KEY UPDATE 
                 `%s` = VALUES (`%s`),
@@ -72,8 +72,9 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
                 Names.BAN_OPERATOR_NAME, Names.BAN_OPERATOR_NAME,
                 Names.BAN_REASON, Names.BAN_REASON,
                 Names.BAN_EXPRESS, Names.BAN_EXPRESS,
-                Names.BAN_ISSUED, Names.BAN_ISSUED
-        ));
+                Names.BAN_ISSUED, Names.BAN_ISSUED);
+        @Cleanup
+        PreparedStatement statement = getConnection().prepareStatement(query);
 
         statement.setString(1, user.getUUID().toString());
         statement.setString(2, user.getName());
@@ -202,8 +203,8 @@ public abstract class AbstractSQLDataProvider implements DataProvider {
         ));
     }
 
-    private class Names {
-        private final static String
+    public class Names {
+        public final static String
                 TABLE = "xpun_players",
                 UUID = "uuid",
                 NAME = "name",
